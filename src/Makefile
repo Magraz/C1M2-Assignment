@@ -40,31 +40,25 @@ LD= #Linker
 LDFLAGS= # C program linker flags
 CFLAGS= -Wall -Werror -g -std=c99 #C program flags
 CPPFLAGS = #C preprocessor flags
-DUMP= #objdump command
-
-#Removal flags
-REMOVE_FLAGS = main.i main.asm main.o main.d \
-memory.i memory.asm memory.o memory.d \
-interrupts_msp432p401r_gcc.i interrupts_msp432p401r_gcc.asm interrupts_msp432p401r_gcc.o interrupts_msp432p401r_gcc.d \
-startup_msp432p401r_gcc.i startup_msp432p401r_gcc.asm startup_msp432p401r_gcc.o startup_msp432p401r_gcc.d \
-system_msp432p401r.i system_msp432p401r.asm system_msp432p401r.o system_msp432p401r.d \
-c1m2.out c1m2.map a.out
+DUMP= #objdump toolchain command
+SIZE = #size toolchain command
 
 ifeq ($(PLATFORM),HOST)
 CC=gcc
 LD=ld
+SIZE = size
+DUMP=objdump
 CPPFLAGS=-DHOST
 LDFLAGS= -Wl,-O0 -Wl,-Map=$(PROJECT_NAME).map
-DUMP=objdump
-# etc
+
 else
 CC=/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gcc
 LD=/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-ld
+DUMP=/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-objdump
+SIZE =/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-size
 CPPFLAGS=-DMSP432 -mcpu=$(CPU) -march=$(ARCH) -specs=$(SPECS) -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 LDFLAGS= -Wl,-O0  -Wl,-T $(LINKER_FILE) -Wl,-Map=$(PROJECT_NAME).map
-DUMP=/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin./arm-none-eabi-objdump
 
-	# etc
 endif
 
 include	sources.mk
@@ -89,7 +83,7 @@ DEPS = $(SOURCES:.c=.d)
 #Cleans all built files
 .PHONY: clean
 clean:
-	rm $(REMOVE_FLAGS)
+	rm -f *.o *.i *.asm *.d *.out $(PROJECT_NAME).map
 
 #Generate object files of all source files
 .PHONY: compile-all
@@ -103,6 +97,8 @@ $(PROJECT_NAME).out: $(OBJS)
 	$(CC) $(LDFLAGS) $(CFLAGS) $(CPPFLAGS) $(INCLUDES) -MD $(SOURCES)
 	#Compile into c1m2.out
 	$(CC) $(LDFLAGS) $(CFLAGS) $(CPPFLAGS) $(INCLUDES) -o $@ $^
+	#Size
+	$(SIZE) $(PROJECT_NAME).out
 
 
 
