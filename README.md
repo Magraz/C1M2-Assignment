@@ -1,0 +1,2 @@
+Author: Manuel Agraz Vallejo
+Project: This project is the second assignment on the Introduction to Embedded Systems Software and Dev Course from the University of Colorado. It involves the use of GNU Make in order to build a build system for the HOST and MSP432 platform.
