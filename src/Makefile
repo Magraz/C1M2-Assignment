@@ -52,10 +52,14 @@ CPPFLAGS=-DHOST
 LDFLAGS= -Wl,-O0 -Wl,-Map=$(PROJECT_NAME).map
 
 else
-CC=/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gcc
-LD=/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-ld
-DUMP=/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-objdump
-SIZE =/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-size
+#CC=/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gcc
+#LD=/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-ld
+#DUMP=/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-objdump
+#SIZE =/home/magraz/Downloads/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-size
+CC=arm-none-eabi-gcc
+LD=arm-none-eabi-ld
+DUMP=arm-none-eabi-objdump
+SIZE=arm-none-eabi-size
 CPPFLAGS=-DMSP432 -mcpu=$(CPU) -march=$(ARCH) -specs=$(SPECS) -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 LDFLAGS= -Wl,-O0  -Wl,-T $(LINKER_FILE) -Wl,-Map=$(PROJECT_NAME).map
 
